@@ -1,0 +1,4 @@
+INSERT INTO endereco (cep, uf, cidade, bairro, rua, numero, complemento) VALUES ('81030440', 'PR', 'Curitiba', 'Novo Mundo', 'Rua Brasílio Ribas', '500', 'Casa');
+INSERT INTO endereco (cep, uf, cidade, bairro, rua, numero, complemento) VALUES ('04530060', 'SP', 'São Paulo', 'Itaim Bibi', 'Rua Antônio Felício', '129', 'Condomínio Edifício Casa Blanca');
+INSERT INTO endereco (cep, uf, cidade, bairro, rua, numero, complemento) VALUES ('80420130', 'PR', 'Curitiba', 'Batel', 'Rua Francisco Rocha', '62', 'Condomínio Triumph Center Batel');
+INSERT INTO endereco (cep, uf, cidade, bairro, rua, numero, complemento) VALUES ('82590300', 'PR', 'Curitiba', 'Água Verde', 'Rua Doutor Pedro Augusto Menna Barreto Monclaro', '261', 'Casa');
