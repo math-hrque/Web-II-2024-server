@@ -120,6 +120,6 @@
 - Arquivo ServletInitializer.java: configura o contexto da aplicação para execução em um contêiner de servlets externo;
 - Pasta resources: contém arquivos necessários para a execução da aplicação;
 - Pasta resources\db\migration: contém arquivos .sql que fazem a manipulação pré-definida no banco de dados assim que o projeto é iniciado, por meio do flyway;
-- Arquivo resources\application.properties: contém as configurações para se conectar ao banco de dados Postgres;
+- Arquivo resources\application.properties: contém as configurações do projeto, como se conectar ao banco de dados Postgres;
 - Arquivo pom.xml: contém todas as dependências do projeto;
 
