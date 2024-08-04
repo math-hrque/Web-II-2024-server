@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.lol.lol.dto.ClienteDTO;
 import br.com.lol.lol.model.Cliente;
 import br.com.lol.lol.repository.ClienteRepository;
 import br.com.lol.lol.service.EmailService;
@@ -34,29 +35,32 @@ public class ClienteREST {
     private ClienteRepository clienteRepository;
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<Cliente> cadastrar(@RequestBody Cliente cliente) {
-
+    public ResponseEntity<ClienteDTO> cadastrar(@RequestBody Cliente cliente) {
         cliente.getUsuario().setEmail(cliente.getUsuario().getEmail().toLowerCase());
         Optional<Cliente> clienteBD = clienteRepository.findByUsuarioEmailOrCpf(cliente.getUsuario().getEmail(), cliente.getCpf());
-        
         if (clienteBD.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            ClienteDTO clienteDTOExistente = new ClienteDTO(clienteBD.get());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(clienteDTOExistente);
         } else {
             String senhaAleatoria = String.format("%04d", new Random().nextInt(10000));
+            try {
+                emailService.sendEmail(cliente.getUsuario().getEmail(), "Cadastro no LOL - Lavanderia On-Line", "Sua senha de acesso é: " + senhaAleatoria);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
             cliente.getUsuario().setSenha(passwordEncoder.encode(senhaAleatoria));
-            clienteRepository.save(cliente);
-            emailService.sendEmail(cliente.getUsuario().getEmail(), "Cadastro no LOL - Lavanderia On-Line", "Sua senha de acesso é: " + senhaAleatoria);
-            cliente.getUsuario().setSenha(null);
-            return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+            Cliente clienteSalvo = clienteRepository.save(cliente);
+            ClienteDTO clienteDTOSalvo = new ClienteDTO(clienteSalvo);
+            return ResponseEntity.status(HttpStatus.CREATED).body(clienteDTOSalvo);
         }
-
     }
 
-    @GetMapping("/consultar/{idCliente}")
-    public ResponseEntity<Cliente> consultar(@PathVariable("idCliente") Long idCliente) {
-        return clienteRepository.findById(idCliente).map(cliente -> {
-            cliente.getUsuario().setSenha(null);
-            return ResponseEntity.ok(cliente);
+    @GetMapping("/consultar/{idUsuario}")
+    public ResponseEntity<ClienteDTO> consultar(@PathVariable("idUsuario") Long idUsuario) {
+        return clienteRepository.findByUsuarioIdUsuario(idUsuario).map(clienteBD -> {
+            ClienteDTO clienteDTO = new ClienteDTO(clienteBD);
+            return ResponseEntity.ok(clienteDTO);
         }).orElse(ResponseEntity.notFound().build());
     }
     

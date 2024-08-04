@@ -1,6 +1,6 @@
 package br.com.lol.lol.enums;
 
-public enum SituacaoEnum {
+public enum TipoSituacao {
     EM_ABERTO,
     REJEITADO,
     CANCELADO,

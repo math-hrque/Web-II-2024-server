@@ -2,7 +2,7 @@ package br.com.lol.lol.model;
 
 import java.io.Serializable;
 
-import br.com.lol.lol.enums.SituacaoEnum;
+import br.com.lol.lol.enums.TipoSituacao;
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -24,5 +24,5 @@ public class Situacao implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name="tipo_situacao", unique = true)
     @Setter @Getter
-    private SituacaoEnum tipoSituacao;
+    private TipoSituacao tipoSituacao;
 }

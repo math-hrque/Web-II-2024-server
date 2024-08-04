@@ -21,10 +21,6 @@ public class Funcionario implements Serializable {
     @Setter @Getter
     private Long idFuncionario;
 
-    @Column(name="nome")
-    @Setter @Getter
-    private String nome;
-
     @Temporal(TemporalType.DATE)
     @Column(name="data_nascimento")
     @Setter @Getter

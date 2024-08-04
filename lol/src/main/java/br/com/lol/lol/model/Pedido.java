@@ -9,7 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.time.OffsetDateTime;
+import java.util.List;
+
+import br.com.lol.lol.dto.PedidoDTO;
+import br.com.lol.lol.dto.PedidoRoupaDTO;
+import br.com.lol.lol.enums.TipoSituacao;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="pedido")
@@ -22,27 +28,24 @@ public class Pedido implements Serializable {
     @Setter @Getter
     private Long idPedido;
 
-    @Column(name="numero_pedido", unique = true)
+    @Column(name="numero_pedido",  unique = true, insertable = false, updatable = false)
+    @SequenceGenerator(name = "numero_pedido_seq", sequenceName = "numero_pedido_sequencia", initialValue = 10000, allocationSize = 1)
     @Setter @Getter
     private Long numeroPedido;
 
     @Column(name="data_pedido")
     @Setter @Getter
-    private OffsetDateTime dataPedido;
+    private LocalDateTime dataPedido;
 
     @Column(name="data_pagamento")
     @Setter @Getter
-    private OffsetDateTime dataPagamento;
+    private LocalDateTime dataPagamento;
 
-    // @OneToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "id_cliente")
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="id_cliente")
     @Setter @Getter
     private Cliente cliente;
 
-    // @OneToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "id_situacao")
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="id_situacao")
     @Setter @Getter
@@ -53,8 +56,35 @@ public class Pedido implements Serializable {
     @Setter @Getter
     private Orcamento orcamento;
 
-    @ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-    @JoinTable(name="pedido_roupa", joinColumns=@JoinColumn(name="id_pedido"), inverseJoinColumns=@JoinColumn(name="id_roupa"))
+    @OneToMany(mappedBy = "pedido", fetch=FetchType.LAZY, orphanRemoval = true)
     @Setter @Getter
-    private ArrayList<PedidoRoupa> listaPedidoRoupas;
+    private List<PedidoRoupa> listaPedidoRoupas;
+
+    public void cadastrar(PedidoDTO pedidoDTO) {
+        this.cliente = new Cliente();
+        this.situacao = new Situacao();
+        this.orcamento = new Orcamento();
+        List<PedidoRoupa> listaPedidoRoupas = new ArrayList<>();
+        this.dataPedido = pedidoDTO.getDataPedido();
+        this.cliente.setIdCliente(pedidoDTO.getIdCliente());
+        if (pedidoDTO.getOrcamento().isAprovado()) {
+            this.situacao.setTipoSituacao(TipoSituacao.EM_ABERTO);
+        } else {
+            this.situacao.setTipoSituacao(TipoSituacao.REJEITADO);
+        }
+        //this.numeroPedido = 0L;
+        this.orcamento = pedidoDTO.getOrcamento();
+        for (PedidoRoupaDTO pedidoRoupaDTO  : pedidoDTO.getListaPedidoRoupas()) {
+            PedidoRoupa pedidoRoupa = new PedidoRoupa();
+            pedidoRoupa.setQuantidade(pedidoRoupaDTO.getQuantidade());
+            Roupa roupa = new Roupa();
+            roupa.atualizar(pedidoRoupaDTO.getRoupa().getIdRoupa(), pedidoRoupaDTO.getRoupa());
+            pedidoRoupa.setRoupa(roupa);
+            listaPedidoRoupas.add(pedidoRoupa);
+        }
+        this.listaPedidoRoupas = listaPedidoRoupas;
+    }
+
+
+
 }

@@ -3,6 +3,6 @@ package br.com.lol.lol.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EnderecoService {
+public class PedidoService {
 
 }

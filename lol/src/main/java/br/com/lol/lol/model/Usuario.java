@@ -27,8 +27,10 @@ public class Usuario implements Serializable {
     @Setter @Getter
     private String senha;
 
-    // @OneToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "id_permissao")
+    @Column(name="nome")
+    @Setter @Getter
+    private String nome;
+
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="id_permissao")
     @Setter @Getter

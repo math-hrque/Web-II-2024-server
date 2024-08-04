@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.lol.lol.dto.UsuarioRequestDTO;
+import br.com.lol.lol.dto.UsuarioResponseDTO;
 import br.com.lol.lol.model.Usuario;
 import br.com.lol.lol.repository.UsuarioRepository;
 
@@ -27,22 +29,18 @@ public class UsuarioREST {
     private UsuarioRepository usuarioRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<Usuario> login(@RequestBody Usuario usuario) {
-
-        usuario.setEmail(usuario.getEmail().toLowerCase());
-        Optional<Usuario> usuarioBD = usuarioRepository.findByEmail(usuario.getEmail());
-
-        if (!usuarioBD.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } else {
-            if (passwordEncoder.matches(usuario.getSenha(), usuarioBD.get().getSenha())) {
-                usuarioBD.get().setSenha(null);
-                return ResponseEntity.ok(usuarioBD.get());
+    public ResponseEntity<UsuarioResponseDTO> login(@RequestBody UsuarioRequestDTO usuarioRequestDTO) {
+        usuarioRequestDTO.setEmail(usuarioRequestDTO.getEmail().toLowerCase());
+        Optional<Usuario> usuarioBD = usuarioRepository.findByEmail(usuarioRequestDTO.getEmail());
+        if (usuarioBD.isPresent()) {
+            if (passwordEncoder.matches(usuarioRequestDTO.getSenha(), usuarioBD.get().getSenha())) {
+                UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(usuarioBD.get());
+                return ResponseEntity.ok(usuarioResponseDTO);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
     }
-
 }

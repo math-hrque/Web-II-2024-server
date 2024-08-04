@@ -1,6 +1,8 @@
 package br.com.lol.lol.model;
 
 import java.io.Serializable;
+
+import br.com.lol.lol.dto.ClienteDTO;
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -22,10 +24,6 @@ public class Cliente implements Serializable {
     @Column(name="cpf", unique = true)
     @Setter @Getter
     private String cpf;
-
-    @Column(name="nome")
-    @Setter @Getter
-    private String nome;
 
     @Column(name="telefone")
     @Setter @Getter

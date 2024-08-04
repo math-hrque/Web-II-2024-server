@@ -2,7 +2,7 @@ package br.com.lol.lol.model;
 
 import java.io.Serializable;
 
-import br.com.lol.lol.enums.PermissaoEnum;
+import br.com.lol.lol.enums.TipoPermissao;
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -24,5 +24,5 @@ public class Permissao implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name="tipo_permissao", unique = true)
     @Setter @Getter
-    private PermissaoEnum tipoPermissao;
+    private TipoPermissao tipoPermissao;
 }

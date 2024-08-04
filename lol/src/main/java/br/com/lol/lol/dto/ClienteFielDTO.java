@@ -1,4 +1,4 @@
-package br.com.lol.lol.model;
+package br.com.lol.lol.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,13 +7,13 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClienteFiel {
+public class ClienteFielDTO {
     @Setter @Getter
-    private Cliente cliente;
+    private ClienteDTO cliente;
 
     @Setter @Getter
     private int quantidadePedidos;
 
     @Setter @Getter
-    private double receita;
+    private Double receita;
 }

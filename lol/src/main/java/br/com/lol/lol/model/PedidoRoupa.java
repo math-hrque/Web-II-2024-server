@@ -23,15 +23,11 @@ public class PedidoRoupa implements Serializable {
     @Setter @Getter
     private int quantidade;
 
-    // @OneToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "id_pedido")
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="id_pedido")
     @Setter @Getter
     private Pedido pedido;
 
-    // @OneToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "id_roupa")
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="id_roupa")
     @Setter @Getter

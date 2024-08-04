@@ -23,7 +23,7 @@ public class Orcamento implements Serializable {
 
     @Column(name="valor")
     @Setter @Getter
-    private double valor;
+    private Double valor;
 
     @Temporal(TemporalType.DATE)
     @Column(name="data_prazo")

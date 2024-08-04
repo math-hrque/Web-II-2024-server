@@ -1,6 +1,6 @@
 package br.com.lol.lol.enums;
 
-public enum PermissaoEnum {
+public enum TipoPermissao {
     CLIENTE,
     FUNCIONARIO,
 }
